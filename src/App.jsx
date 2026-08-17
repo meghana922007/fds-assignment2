@@ -12,17 +12,14 @@ import ScrollToTop from './components/ScrollToTop.jsx'
 import './App.css'
 
 function App() {
-  const [theme, setTheme] = useState('light')
-
-  // useEffect 1: Read theme from localStorage on initial mount
-  useEffect(() => {
+  const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem('portfolio-theme')
-    if (saved === 'dark' || saved === 'light') {
-      setTheme(saved)
-    }
-  }, [])
+    const initialTheme = saved === 'dark' || saved === 'light' ? saved : 'light'
+    document.documentElement.setAttribute('data-theme', initialTheme)
+    return initialTheme
+  })
 
-  // useEffect 2: Persist theme to localStorage whenever it changes
+  // useEffect: Persist theme to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem('portfolio-theme', theme)
     document.documentElement.setAttribute('data-theme', theme)

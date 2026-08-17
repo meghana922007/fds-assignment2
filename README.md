@@ -96,13 +96,15 @@ src/
 ## ⚡ useEffect Hooks Implemented
 
 ### 1. Theme Persistence (`App.jsx`)
+Theme state is initialized lazily from `localStorage` on the initial paint to prevent race conditions or style flashes:
 ```jsx
-useEffect(() => {
+const [theme, setTheme] = useState(() => {
   const saved = localStorage.getItem('portfolio-theme')
-  if (saved === 'dark' || saved === 'light') setTheme(saved)
-}, [])
+  const initialTheme = saved === 'dark' || saved === 'light' ? saved : 'light'
+  document.documentElement.setAttribute('data-theme', initialTheme)
+  return initialTheme
+})
 ```
-**Why:** Reads the user's previously selected theme from `localStorage` on initial app load. Runs once on mount (empty dependency array).
 
 ```jsx
 useEffect(() => {
@@ -110,7 +112,7 @@ useEffect(() => {
   document.documentElement.setAttribute('data-theme', theme)
 }, [theme])
 ```
-**Why:** Persists theme changes to `localStorage` and applies the `data-theme` attribute to `<html>` for CSS dark mode selectors. Runs on every theme change.
+**Why:** Persists theme changes to `localStorage` and applies the `data-theme` attribute to `<html>` for CSS dark mode selectors. Runs whenever the theme state changes.
 
 ### 2. Home Loading Simulation (`Home.jsx`)
 ```jsx
