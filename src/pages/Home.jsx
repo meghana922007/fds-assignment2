@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import profileImg from '../assets/profile.png'
 
 function Home() {
   const [loading, setLoading] = useState(true)
@@ -59,7 +60,7 @@ function Home() {
         <div className="hero-visual">
           <div className="photo-frame">
             <div className="photo-container">
-              <img src="Image.png" alt="Pinikeshi Meghana" className="profile-photo" />
+              <img src={profileImg} alt="Pinikeshi Meghana" className="profile-photo" />
             </div>
             <div className="photo-badge badge-1">NIT Warangal</div>
             <div className="photo-badge badge-2">CSE '28</div>

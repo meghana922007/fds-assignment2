@@ -23,6 +23,12 @@ function ProjectDetail({ projects }) {
           <span className="project-detail-year">{project.year}</span>
           <h1 className="project-detail-title">{project.title}</h1>
         </div>
+ 
+        {project.image && (
+          <div className="project-detail-image-wrapper">
+            <img src={project.image} alt={project.title} className="project-detail-image" />
+          </div>
+        )}
 
         <p className="project-detail-desc">{project.description}</p>
 

@@ -17,6 +17,7 @@ function ProjectsGrid({ projects }) {
           stack={project.stack}
           link={project.link}
           accent={project.accent}
+          image={project.image}
         />
       ))}
     </div>

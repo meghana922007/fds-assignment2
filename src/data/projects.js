@@ -1,3 +1,8 @@
+import aiVideoImg from '../assets/project-ai-video.png'
+import sellerSenseImg from '../assets/project-seller-sense.png'
+import homeHavenImg from '../assets/project-home-haven.png'
+import taskMasterImg from '../assets/project-task-master.png'
+
 export const projects = [
   {
     id: 'ai-video-search',
@@ -13,6 +18,7 @@ export const projects = [
     stack: ['Python', 'FastAPI', 'React', 'Docker', 'Qdrant', 'Whisper'],
     link: 'https://github.com/SiddhantSangaonkar/ai-video-search',
     accent: 'var(--coral)',
+    image: aiVideoImg,
   },
   {
     id: 'seller-sense',
@@ -28,6 +34,7 @@ export const projects = [
     stack: ['React', 'TypeScript', 'Express.js', 'PostgreSQL', 'Prisma'],
     link: 'https://github.com/meghana922007/sellersense',
     accent: 'var(--sage)',
+    image: sellerSenseImg,
   },
   {
     id: 'home-haven',
@@ -41,8 +48,9 @@ export const projects = [
       'Clean semantic markup with accessible navigation patterns',
     ],
     stack: ['HTML5', 'CSS3', 'JavaScript'],
-    link: '#',
+    link: 'https://github.com/meghana922007/HOME-HAVEN-HOUSE-RENTAL-WEBSITE',
     accent: 'var(--lavender)',
+    image: homeHavenImg,
   },
   {
     id: 'task-master',
@@ -58,5 +66,6 @@ export const projects = [
     stack: ['React', 'Node.js', 'Socket.io', 'MongoDB', 'Tailwind CSS'],
     link: '#',
     accent: 'var(--peach)',
+    image: taskMasterImg,
   },
 ]

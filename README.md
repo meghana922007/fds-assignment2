@@ -39,6 +39,12 @@ The production build will be output to the `dist/` folder with zero console erro
 ### Folder Structure
 ```
 src/
+├── assets/          # Static assets (images, illustrations)
+│   ├── profile.png      # Developer photo
+│   ├── project-ai-video.png
+│   ├── project-seller-sense.png
+│   ├── project-home-haven.png
+│   └── project-task-master.png
 ├── components/
 │   ├── Layout.jsx       # Shared layout wrapper (Navbar + Footer + Outlet)
 │   ├── Navbar.jsx       # Navigation with theme toggle & mobile menu
@@ -183,7 +189,7 @@ useEffect(() => {
 
 ## 📝 Notes
 
-- Place your profile image at `public/Image.png` for the hero section to display correctly.
+- All profile and project illustration images are stored and managed inside `src/assets/` to ensure safe production builds.
 - The theme toggle button is located in the navbar, next to the hamburger menu on mobile.
 - All project data is centralized in `src/data/projects.js` for easy maintenance.
 - The contact form currently simulates submission (no backend yet — that will be added in Assignment 3 with Node.js/Express).
