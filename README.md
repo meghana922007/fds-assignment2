@@ -1,4 +1,7 @@
 # Pinikeshi Meghana — Interactive Portfolio (React)
+## 🎥 Assignment Demo Video
+
+[Watch the Screen Recording](https://drive.google.com/drive/folders/1IhYWyoJPRj2xQYvlPmnAS4E8cJH1KGkX?usp=drive_link)
 
 A fully functional, multi-page portfolio website built with React, React Router, and Hooks. Extended from the static HTML/CSS portfolio (Assignment 1) into a dynamic single-page application with client-side routing, theme toggling, form validation, and interactive components.
 
