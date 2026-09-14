@@ -1,6 +1,9 @@
 # Pinikeshi Meghana — Interactive Full-Stack Portfolio
 
 ## 🎥 Demo & Assignment Link
+- **Demo Video**: https://drive.google.com/drive/folders/1ro6N2AiwMb3mvI9XlDEMJNgsgn94S6sg?usp=drive_link
+
+
 - **Project Structure**: React Frontend (`/src`) + Node.js/Express Backend (`/server`)
 
 A full-stack web application extending Assignment 2 by integrating a live Express.js backend API. The static project data and client-side contact form are now served and handled dynamically by the backend API. All Assignment 2 features (client-side routing, dark mode toggle, layout, dynamic detail pages) continue to work seamlessly.
