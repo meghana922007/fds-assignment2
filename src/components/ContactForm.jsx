@@ -10,7 +10,9 @@ function ContactForm() {
 
   const [errors, setErrors] = useState({})
   const [touched, setTouched] = useState({})
+  const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [serverError, setServerError] = useState('')
 
   const validate = (data) => {
     const errs = {}
@@ -29,6 +31,7 @@ function ContactForm() {
     const next = { ...formData, [name]: value }
     setFormData(next)
     setErrors(validate(next))
+    if (serverError) setServerError('')
   }
 
   const handleBlur = (e) => {
@@ -36,17 +39,43 @@ function ContactForm() {
     setTouched((prev) => ({ ...prev, [name]: true }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const validationErrors = validate(formData)
     setErrors(validationErrors)
     setTouched({ name: true, email: true, message: true, subject: true })
+    setServerError('')
 
-    if (Object.keys(validationErrors).length === 0) {
+    if (Object.keys(validationErrors).length > 0) {
+      return
+    }
+
+    setSubmitting(true)
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Server rejected submission.')
+      }
+
       setSubmitted(true)
       setFormData({ name: '', email: '', subject: '', message: '' })
       setTouched({})
-      setTimeout(() => setSubmitted(false), 4000)
+      setErrors({})
+      setTimeout(() => setSubmitted(false), 5000)
+    } catch (err) {
+      console.error('Contact submit error:', err)
+      setServerError(err.message || 'Unable to reach backend server.')
+    } finally {
+      setSubmitting(false)
     }
   }
 
@@ -69,7 +98,22 @@ function ContactForm() {
             fontWeight: 600,
           }}
         >
-          ✅ Message sent successfully! I'll get back to you soon.
+          ✅ Message sent successfully! Thank you for reaching out.
+        </div>
+      )}
+
+      {serverError && (
+        <div
+          style={{
+            background: '#fed7d7',
+            color: '#9b2c2c',
+            padding: 'var(--space-sm)',
+            borderRadius: 'var(--radius-sm)',
+            marginBottom: 'var(--space-md)',
+            fontWeight: 600,
+          }}
+        >
+          ❌ {serverError}
         </div>
       )}
 
@@ -86,6 +130,7 @@ function ContactForm() {
           onBlur={handleBlur}
           aria-required="true"
           autoComplete="name"
+          disabled={submitting}
         />
         {touched.name && errors.name && (
           <span className="error-message">{errors.name}</span>
@@ -105,6 +150,7 @@ function ContactForm() {
           onBlur={handleBlur}
           aria-required="true"
           autoComplete="email"
+          disabled={submitting}
         />
         {touched.email && errors.email && (
           <span className="error-message">{errors.email}</span>
@@ -121,6 +167,7 @@ function ContactForm() {
           placeholder="Project Collaboration"
           value={formData.subject}
           onChange={handleChange}
+          disabled={submitting}
         />
       </div>
 
@@ -136,14 +183,15 @@ function ContactForm() {
           onChange={handleChange}
           onBlur={handleBlur}
           aria-required="true"
+          disabled={submitting}
         ></textarea>
         {touched.message && errors.message && (
           <span className="error-message">{errors.message}</span>
         )}
       </div>
 
-      <button type="submit" className="btn btn-primary btn-full" disabled={!isValid}>
-        Send Message
+      <button type="submit" className="btn btn-primary btn-full" disabled={!isValid || submitting}>
+        {submitting ? 'Sending Message...' : 'Send Message'}
         <span className="btn-arrow" aria-hidden="true">→</span>
       </button>
     </form>

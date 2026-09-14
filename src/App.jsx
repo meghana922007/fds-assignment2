@@ -7,7 +7,6 @@ import Projects from './pages/Projects.jsx'
 import Contact from './pages/Contact.jsx'
 import ProjectDetail from './pages/ProjectDetail.jsx'
 import NotFound from './pages/NotFound.jsx'
-import { projects } from './data/projects.js'
 import ScrollToTop from './components/ScrollToTop.jsx'
 import './App.css'
 
@@ -41,14 +40,8 @@ function App() {
           <Route path="home" element={<Home />} />
           <Route path="Home" element={<Home />} />
           <Route path="about" element={<About />} />
-          <Route
-            path="projects"
-            element={<Projects projects={projects} />}
-          />
-          <Route
-            path="projects/:projectId"
-            element={<ProjectDetail projects={projects} />}
-          />
+          <Route path="projects" element={<Projects />} />
+          <Route path="projects/:projectId" element={<ProjectDetail />} />
           <Route path="contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
         </Route>

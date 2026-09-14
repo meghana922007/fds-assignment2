@@ -1,0 +1,163 @@
+{
+  "info": {
+    "_postman_id": "8f3b2a1c-9d4e-4f5a-b6c7-1a2b3c4d5e6f",
+    "name": "Portfolio Express API",
+    "description": "Postman Collection for Portfolio Node.js/Express Backend API (Endpoints B1 - B7)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "B1 - Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5001/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": [""]
+        }
+      }
+    },
+    {
+      "name": "B2 - Get All Projects",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5001/api/projects",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": ["api", "projects"]
+        }
+      }
+    },
+    {
+      "name": "B3 - Get Single Project (Success)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5001/api/projects/ai-video-search",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": ["api", "projects", "ai-video-search"]
+        }
+      }
+    },
+    {
+      "name": "B3 - Get Single Project (404 Not Found)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5001/api/projects/non-existent-id",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": ["api", "projects", "non-existent-id"]
+        }
+      }
+    },
+    {
+      "name": "B4 - Submit Contact Form (Success)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Alice Developer\",\n  \"email\": \"alice@example.com\",\n  \"subject\": \"Project Inquiry\",\n  \"message\": \"I am interested in collaborating on a web project.\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5001/api/contact",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": ["api", "contact"]
+        }
+      }
+    },
+    {
+      "name": "B4 - Submit Contact Form (400 Invalid Email)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Alice Developer\",\n  \"email\": \"invalid-email-format\",\n  \"subject\": \"Project Inquiry\",\n  \"message\": \"I am interested in collaborating.\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5001/api/contact",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": ["api", "contact"]
+        }
+      }
+    },
+    {
+      "name": "B4 - Submit Contact Form (400 Missing Message)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Alice Developer\",\n  \"email\": \"alice@example.com\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5001/api/contact",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": ["api", "contact"]
+        }
+      }
+    },
+    {
+      "name": "B5 - List Contact Submissions",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5001/api/contact",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": ["api", "contact"]
+        }
+      }
+    },
+    {
+      "name": "B6 - Catch-All Undefined Route (404)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5001/api/undefined-endpoint",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": ["api", "undefined-endpoint"]
+        }
+      }
+    }
+  ]
+}

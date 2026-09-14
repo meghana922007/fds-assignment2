@@ -1,9 +1,9 @@
-# Pinikeshi Meghana — Interactive Portfolio (React)
-## 🎥 Assignment Demo Video
+# Pinikeshi Meghana — Interactive Full-Stack Portfolio
 
-[Watch the Screen Recording](https://drive.google.com/drive/folders/1IhYWyoJPRj2xQYvlPmnAS4E8cJH1KGkX?usp=drive_link)
+## 🎥 Demo & Assignment Link
+- **Project Structure**: React Frontend (`/src`) + Node.js/Express Backend (`/server`)
 
-A fully functional, multi-page portfolio website built with React, React Router, and Hooks. Extended from the static HTML/CSS portfolio (Assignment 1) into a dynamic single-page application with client-side routing, theme toggling, form validation, and interactive components.
+A full-stack web application extending Assignment 2 by integrating a live Express.js backend API. The static project data and client-side contact form are now served and handled dynamically by the backend API. All Assignment 2 features (client-side routing, dark mode toggle, layout, dynamic detail pages) continue to work seamlessly.
 
 ---
 
@@ -13,191 +13,186 @@ A fully functional, multi-page portfolio website built with React, React Router,
 - Node.js (v18 or higher)
 - npm or yarn
 
-### Installation
-```bash
-# 1. Extract the project folder
-cd portfolio-react
+### Running the Full-Stack Application
 
-# 2. Install dependencies
+The application requires running two processes simultaneously:
+
+#### 1. Start the Backend API Server
+```bash
+# Navigate to the server folder
+cd server
+
+# Install backend dependencies (express, cors, dotenv)
 npm install
 
-# 3. Start the development server
+# Start the backend server (runs on port 5001)
+npm start
+# OR for development watching:
 npm run dev
-
-# 4. Open your browser and navigate to:
-# http://localhost:5173
 ```
 
-### Build for Production
+#### 2. Start the Frontend React App
 ```bash
-npm run build
+# Open a new terminal window in the root directory
+cd portfolio-react
+
+# Install frontend dependencies (if not installed)
+npm install
+
+# Start the Vite development server (runs on port 5173 with proxy to 5001)
+npm run dev
 ```
 
-The production build will be output to the `dist/` folder with zero console errors.
+#### 3. Access in Browser
+Navigate to `http://localhost:5173` in your web browser.
 
 ---
 
-## 🏗 Component Tree & State-Lifting Decisions
+## 📁 Repository Structure
 
-### Folder Structure
 ```
-src/
-├── assets/          # Static assets (images, illustrations)
-│   ├── profile.png      # Developer photo
-│   ├── project-ai-video.png
-│   ├── project-seller-sense.png
-│   ├── project-home-haven.png
-│   └── project-task-master.png
-├── components/
-│   ├── Layout.jsx       # Shared layout wrapper (Navbar + Footer + Outlet)
-│   ├── Navbar.jsx       # Navigation with theme toggle & mobile menu
-│   ├── Footer.jsx       # Site footer
-│   ├── ProjectCard.jsx  # Reusable project card (all data via props)
-│   ├── Skills.jsx       # Skills display with prop drilling demo
-│   └── ContactForm.jsx  # Controlled form with validation
-├── pages/
-│   ├── Home.jsx         # Hero section + loading simulation
-│   ├── About.jsx        # Education, skills, timeline, soft skills
-│   ├── Projects.jsx     # Projects grid listing
-│   ├── Contact.jsx      # Contact info + form
-│   ├── ProjectDetail.jsx# Dynamic route for individual projects
-│   └── NotFound.jsx     # 404 catch-all page
-├── data/
-│   └── projects.js      # Centralized project data array
-├── App.jsx              # Root component: routing + theme state
-├── App.css              # Global styles with dark mode support
-└── main.jsx             # React entry point with BrowserRouter
+portfolio-react/
+├── server/                        # Node.js/Express Backend
+│   ├── data/
+│   │   ├── projects.json          # Server-side project data storage
+│   │   └── contacts.json          # Persistent contact submissions storage
+│   ├── .env                       # Local environment variables
+│   ├── .env.example               # Template environment variables
+│   ├── package.json               # Backend dependencies & scripts
+│   └── server.js                  # Main Express API server
+├── public/
+│   └── assets/                    # Public project image assets
+├── src/
+│   ├── components/
+│   │   ├── ContactForm.jsx        # Submits contact data to POST /api/contact
+│   │   ├── ProjectCard.jsx        # Renders individual project card
+│   │   ├── Navbar.jsx             # Navigation & theme toggle
+│   │   └── Layout.jsx             # Page layout wrapper
+│   ├── pages/
+│   │   ├── Projects.jsx           # Fetches GET /api/projects via useEffect
+│   │   ├── ProjectDetail.jsx      # Fetches GET /api/projects/:id via useEffect
+│   │   ├── Contact.jsx            # Contact page wrapper
+│   │   └── Home.jsx               # Hero & landing page
+│   ├── App.jsx                    # Top-level routing & theme state
+│   └── App.css                    # Application styles
+├── curl_commands.md               # cURL test suite for B1–B7 endpoints
+├── portfolio_api.postman_collection.json # Exported Postman Collection
+├── vite.config.js                 # Proxy configuration (/api -> http://localhost:5001)
+└── README.md                      # Documentation
 ```
-
-### State-Lifting Decisions
-
-| State | Location | Reason |
-|-------|----------|--------|
-| **Theme (dark/light)** | `App.jsx` | Needed by `Navbar` (toggle button) and affects global CSS. Lifted to top level and passed down via props through `Layout` → `Navbar`. |
-| **Contact form fields** | `ContactForm.jsx` | Local to the form component. No other component needs this data. |
-| **Contact validation errors** | `ContactForm.jsx` | Derived from form state. Kept co-located with form logic. |
-| **Project card expanded** | `ProjectCard.jsx` | Scoped per instance. Each card manages its own toggle independently to demonstrate proper state isolation. |
-| **Mobile menu open** | `Navbar.jsx` | Local UI state, only Navbar needs to know. |
-| **Scroll shadow** | `Navbar.jsx` | Local UI state for header styling on scroll. |
-| **Loading state** | `Home.jsx` | Only the Home page needs the simulated loading sequence. |
-
-### Prop Drilling (2+ Levels Deep)
-
-1. **About → Skills → SkillGroup**
-   - `About.jsx` receives `skillsData` array and passes it to `<Skills skillsData={skillsData} />`
-   - `Skills.jsx` maps over groups and passes individual `{ heading, tags }` objects to `<SkillGroup heading={group.heading} tags={group.tags} />`
-   - **Depth:** 2 levels
-
-2. **App → Projects → ProjectsGrid → ProjectCard**
-   - `App.jsx` passes `projects` array to `<Projects projects={projects} />`
-   - `Projects.jsx` passes the array to `<ProjectsGrid projects={projects} />`
-   - `ProjectsGrid` destructures each project object and passes fields as individual props to `<ProjectCard ... />`
-   - **Depth:** 3 levels
 
 ---
 
-## ⚡ useEffect Hooks Implemented
+## ⚙️ Environment Configuration (`.env.example`)
 
-### 1. Theme Persistence (`App.jsx`)
-Theme state is initialized lazily from `localStorage` on the initial paint to prevent race conditions or style flashes:
-```jsx
-const [theme, setTheme] = useState(() => {
-  const saved = localStorage.getItem('portfolio-theme')
-  const initialTheme = saved === 'dark' || saved === 'light' ? saved : 'light'
-  document.documentElement.setAttribute('data-theme', initialTheme)
-  return initialTheme
-})
+The backend uses `dotenv` to load environment variables from `server/.env`. A `.env.example` template file is included:
+
+```env
+# Server Port Configuration
+PORT=5001
+
+# Allowed Origin for CORS
+CLIENT_URL=http://localhost:5173
+
+# Data File Paths
+PROJECTS_FILE=./data/projects.json
+CONTACTS_FILE=./data/contacts.json
 ```
 
-```jsx
-useEffect(() => {
-  localStorage.setItem('portfolio-theme', theme)
-  document.documentElement.setAttribute('data-theme', theme)
-}, [theme])
-```
-**Why:** Persists theme changes to `localStorage` and applies the `data-theme` attribute to `<html>` for CSS dark mode selectors. Runs whenever the theme state changes.
+> [!NOTE]
+> `PORT` is set to `5001` to avoid port collisions with macOS AirPlay (which binds to port 5000 by default).
 
-### 2. Home Loading Simulation (`Home.jsx`)
-```jsx
-useEffect(() => {
-  const timer = setTimeout(() => setLoading(false), 1000)
-  return () => clearTimeout(timer)
-}, [])
-```
-**Why:** Simulates a brief loading sequence (1 second) when the Home component mounts. Demonstrates async initialization patterns. Includes cleanup to clear the timer if the component unmounts early, preventing memory leaks and state updates on unmounted components.
+---
 
-### 3. Scroll Listener with Cleanup (`Navbar.jsx`)
-```jsx
-useEffect(() => {
-  const handleScroll = () => setScrolled(window.scrollY > 20)
-  window.addEventListener('scroll', handleScroll)
-  return () => window.removeEventListener('scroll', handleScroll)
-}, [])
-```
-**Why:** Adds a scroll event listener to toggle the header shadow when the user scrolls down. **Cleanup function removes the listener** on unmount to prevent memory leaks.
+## 📡 API Endpoints Documentation (B1–B7)
 
-### 4. Resize Listener with Cleanup (`Navbar.jsx`)
-```jsx
-useEffect(() => {
-  const handleResize = () => {
-    if (window.innerWidth > 768) setMenuOpen(false)
+### 1. Health Check Endpoint
+- **Method & Path**: `GET /`
+- **Description**: Confirms the backend API server is running.
+- **Success Response (`200 OK`)**:
+  ```json
+  {
+    "status": "ok",
+    "message": "Portfolio API is running smoothly"
   }
-  window.addEventListener('resize', handleResize)
-  return () => window.removeEventListener('resize', handleResize)
-}, [])
-```
-**Why:** Automatically closes the mobile navigation menu when the window is resized above tablet breakpoint. **Cleanup function removes the listener** on unmount.
+  ```
+
+### 2. List Projects Endpoint
+- **Method & Path**: `GET /api/projects`
+- **Description**: Returns array of all project objects.
+- **Success Response (`200 OK`)**:
+  ```json
+  [
+    {
+      "id": "ai-video-search",
+      "title": "AI Video Search Engine",
+      "year": "2026",
+      "description": "An AI-powered video search engine...",
+      "highlights": ["Converted unstructured videos...", "Containerized microservice..."],
+      "stack": ["Python", "FastAPI", "React", "Docker", "Qdrant", "Whisper"],
+      "link": "https://github.com/SiddhantSangaonkar/ai-video-search",
+      "accent": "var(--coral)",
+      "image": "/assets/project-ai-video.png"
+    }
+  ]
+  ```
+
+### 3. Single Project Endpoint
+- **Method & Path**: `GET /api/projects/:id`
+- **Description**: Returns project details matching the given `id`.
+- **Success Response (`200 OK`)**: Project object matching `id`.
+- **Error Response (`404 Not Found`)**:
+  ```json
+  {
+    "error": "Project not found"
+  }
+  ```
+
+### 4. Submit Contact Form Endpoint
+- **Method & Path**: `POST /api/contact`
+- **Description**: Accepts contact submission `{ name, email, subject, message }`, validates input, and persists data.
+- **Validation Rules**:
+  - Missing `name`, `email`, or `message` -> `400 Bad Request` with field-specific error.
+  - Invalid email format (missing `@` or domain) -> `400 Bad Request`.
+- **Success Response (`201 Created`)**:
+  ```json
+  {
+    "message": "Contact submission received successfully",
+    "submission": {
+      "id": "sub_1789389713639_dyim",
+      "name": "Jane Developer",
+      "email": "jane@example.com",
+      "subject": "Collaboration",
+      "message": "Hello!",
+      "submittedAt": "2026-09-14T12:41:53.639Z"
+    }
+  }
+  ```
+
+### 5. List Contact Submissions Endpoint
+- **Method & Path**: `GET /api/contact`
+- **Description**: Returns JSON array of all stored contact form submissions.
+- **Open Endpoint Notice**: As specified by assignment requirements, this endpoint requires no authentication to allow verification of submitted form data during evaluation.
+
+### 6. Centralized Error & 404 Handling
+- **Undefined Routes**: Any request to an unmapped path (e.g. `GET /api/doesnotexist`) returns `404 Not Found` with:
+  ```json
+  {
+    "error": "Route /api/doesnotexist not found"
+  }
+  ```
+- **Global Error Handler**: Unhandled errors trigger the Express error middleware `(err, req, res, next)` and return a JSON error response without crashing the server.
+
+### 7. CORS & Storage Details
+- **CORS Support**: Configured via the `cors` package to allow requests from the React development server (`http://localhost:5173`).
+- **Data Persistence**: Stored server-side in JSON files (`server/data/projects.json` and `server/data/contacts.json`), ensuring submissions persist across server restarts without requiring heavy database setup.
 
 ---
 
-## 🎨 Features Checklist
+## 🧪 Testing & Postman Deliverables
 
-- [x] Reusable components: `Navbar`, `ProjectCard`, `Skills`, `ContactForm`, `Footer`, `Layout`
-- [x] `ProjectCard` receives all data via props (no hardcoded content)
-- [x] 4+ projects mapped from `src/data/projects.js`
-- [x] Prop drilling 2+ levels deep (About→Skills→SkillGroup and App→Projects→ProjectsGrid→ProjectCard)
-- [x] Dark/light theme toggle with state lifted to `App`
-- [x] Controlled contact form with validation (name, email, message)
-- [x] Submit button disabled until required fields are valid
-- [x] "View details" toggle per `ProjectCard` (independent state per instance)
-- [x] Home loading simulation via `useEffect` + `setTimeout`
-- [x] Theme persistence to `localStorage` via `useEffect`
-- [x] All `useEffect` hooks with subscriptions/timers include cleanup functions
-- [x] `react-router-dom` configured with `BrowserRouter`
-- [x] Routes: `/`, `/about`, `/projects`, `/contact`
-- [x] Dynamic route: `/projects/:projectId`
-- [x] 404 catch-all route with link back to Home
-- [x] Shared layout (`Navbar` + `Footer`) via `Outlet`
-- [x] Navigation uses `<NavLink>` (not `<a>` tags)
-- [x] CSS adapted from Assignment 1 with dark mode support
-- [x] Responsive breakpoints (mobile ≤480px, tablet ≤768px)
-- [x] Semantic HTML (`<nav>`, `<main>`, `<section>`, `<footer>`, `<article>`)
-- [x] WCAG AA color contrast maintained
-- [x] Functional components with Hooks only (no class components)
-- [x] No third-party state management libraries
-- [x] No UI component libraries (plain JSX + CSS)
-- [x] Builds successfully with `npm run build`
-
----
-
-## 📦 Dependencies
-
-| Package | Version | Purpose |
-|---------|---------|---------|
-| `react` | ^18.3.1 | UI library |
-| `react-dom` | ^18.3.1 | DOM renderer |
-| `react-router-dom` | ^6.26.0 | Client-side routing |
-| `vite` | ^5.3.4 | Build tool |
-| `@vitejs/plugin-react` | ^4.3.1 | React support for Vite |
-
----
-
-## 📝 Notes
-
-- All profile and project illustration images are stored and managed inside `src/assets/` to ensure safe production builds.
-- The theme toggle button is located in the navbar, next to the hamburger menu on mobile.
-- All project data is centralized in `src/data/projects.js` for easy maintenance.
-- The contact form currently simulates submission (no backend yet — that will be added in Assignment 3 with Node.js/Express).
+- **cURL Command Suite**: Available in [`curl_commands.md`](./curl_commands.md) with exact test commands for all endpoints (including valid and invalid validation cases).
+- **Postman Collection**: Exported JSON collection available in [`portfolio_api.postman_collection.json`](./portfolio_api.postman_collection.json).
 
 ---
 
