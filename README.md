@@ -13,41 +13,48 @@ A full-stack web application extending Assignment 2 by integrating a live Expres
 ## 🚀 Setup & Run Instructions
 
 ### Prerequisites
-- Node.js (v18 or higher)
-- npm or yarn
+- **Node.js**: v18.0.0 or higher
+- **npm**: v9.0.0 or higher
 
-### Running the Full-Stack Application
+---
 
-The application requires running two processes simultaneously:
+### Step-by-Step Terminal Instructions
 
-#### 1. Start the Backend API Server
+The full-stack application requires running **two separate terminal processes** simultaneously (one for the Express backend server and one for the React Vite frontend).
+
+#### 📍 Terminal 1: Backend Express Server
 ```bash
-# Navigate to the server folder
+# 1. From the repository root, navigate into the /server directory
 cd server
 
-# Install backend dependencies (express, cors, dotenv)
+# 2. Install backend dependencies (express, cors, dotenv)
 npm install
 
-# Start the backend server (runs on port 5001)
+# 3. Start the Express API server (runs on http://localhost:5001)
 npm start
-# OR for development watching:
-npm run dev
 ```
+*(Alternatively, run `npm run dev` inside `/server` for auto-reloading during development).*
 
-#### 2. Start the Frontend React App
+---
+
+#### 📍 Terminal 2: Frontend React App
 ```bash
-# Open a new terminal window in the root directory
-cd portfolio-react
+# 1. Ensure you are in the repository root directory (portfolio-react)
+# (If you are in /server, run: cd ..)
 
-# Install frontend dependencies (if not installed)
+# 2. Install frontend dependencies (if not already installed)
 npm install
 
-# Start the Vite development server (runs on port 5173 with proxy to 5001)
+# 3. Start the Vite React dev server (runs on http://localhost:5173)
 npm run dev
 ```
 
-#### 3. Access in Browser
-Navigate to `http://localhost:5173` in your web browser.
+---
+
+#### 🌐 Accessing the Application
+Once both terminals are running:
+- Open your browser and navigate to: **`http://localhost:5173`**
+- The frontend will automatically proxy and communicate with the backend API at **`http://localhost:5001`**.
 
 ---
 
